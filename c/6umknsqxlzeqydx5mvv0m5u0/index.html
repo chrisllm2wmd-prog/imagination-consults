@@ -101,8 +101,6 @@ h1,h2,h3{font-weight:800;letter-spacing:.02em}
 #beginBtn{margin-top:8px;border:0;background:var(--orange);color:#000;font-weight:900;letter-spacing:.14em;text-transform:uppercase;font-size:clamp(16px,2.2vw,22px);padding:16px 44px;border-radius:50px;cursor:pointer;box-shadow:0 0 50px rgba(255,122,43,.45);transition:transform .2s}
 #beginBtn:hover{transform:scale(1.05)}
 #skipStart{background:none;border:0;color:var(--dim);font-size:15px;cursor:pointer;text-decoration:underline;padding:8px}
-@media (orientation:portrait) and (pointer:coarse){#rot{display:block}}
-#rot{display:none;color:#ffb27a;font-size:15px}
 
 /* intro controls */
 #ctl{position:absolute;inset:0;z-index:4;pointer-events:none}
@@ -227,7 +225,6 @@ body.intro-on #sendBar{display:none}
    <h1 id="startHello"></h1>
    <div class="pn" id="startProject"></div>
    <button id="beginBtn">&#9654;&nbsp; Begin</button>
-   <p id="rot">&#10227; Turn your phone sideways for the best view</p>
    <button id="skipStart">Skip to the feedback form</button>
  </div>
  <div id="ctl">
@@ -315,7 +312,7 @@ function nl(s){return esc(s)}
 var S=D.studio||{},C=D.customer||{},P=D.project||{},TH=D.theme||{};
 var ideas=(D.ideas||[]).filter(function(i){return i&&i.img});
 ideas.forEach(function(it,i){it.title='Inspiration No '+(i+1)});
-var LV=S.logo?'':(D.logoVideo||'');   // the animated studio logo plays as the title logo unless the designer chose their own picture
+var LV=D.logoVideo||'';   // the animated studio logo is always the title logo; a chosen logo picture is used at the top of the form
 var first=(C.name||'').split(/\s+/)[0]||'there';
 var storeKey='imagination-consult-'+(D.id||'pack')+'-r'+(D.round||1);
 if(TH.accent)document.documentElement.style.setProperty('--orange',TH.accent);
@@ -427,9 +424,6 @@ if(LV){var sv=$('#startVid');sv.src=LV;sv.muted=true;sv.style.display='block';va
 else if(S.logo){var sl=$('#startLogo');sl.src=S.logo;sl.style.display='block'}else{$('#startStudio').textContent=S.name||''}
 function begin(){
   $('#start').style.display='none';$('#intro').classList.add('run');film=false;started=true;playing=false;t=0;cur=-1;showScene(0);fillBar();
-  var fsEl=document.documentElement;
-  /* going full screen on a phone gives the "cinema" feel, but never blocks if refused */
-  try{if(matchMedia('(pointer:coarse)').matches&&fsEl.requestFullscreen)fsEl.requestFullscreen().catch(function(){})}catch(e){}
 }
 function toForm(replayOk){
   playing=false;started=false;musicOff();
